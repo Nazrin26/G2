@@ -1,18 +1,31 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div>
+    <Navbar></Navbar>
+    <div class="row">
+      <component :is="action"></component>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import Navbar from '@/components/Shared/Navbar.vue';
+import PR from '@/components/documents/PR.vue';
+import Login from '@/components/Auth/Login.vue';
+import Register from '@/components/Auth/Register.vue';
 
-export default Vue.extend({
-  name: 'home',
+@Component({
   components: {
-    HelloWorld,
+    Login,
+    Register,
+    Navbar,
+    PR,
   },
-});
+  mounted() {
+
+  },
+})
+export default class Home extends Vue {
+  @Prop(String) action!: string
+}
 </script>
