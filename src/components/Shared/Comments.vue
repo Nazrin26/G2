@@ -12,14 +12,14 @@
           </div>
         </li>
       </ul>
-      <form class="form-inline" role="form">
+      <div class="form-inline" role="form">
         <div class="form-group">
           <input class="form-control" v-model="comment" type="text" placeholder="Your comments" />
         </div>
         <div class="form-group">
           <button class="btn btn-default" @click="addComment">Add</button>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </template>
@@ -44,11 +44,8 @@ export default {
         comment: this.comment,
         date: this.date,
       };
-      this.$store.dispatch('addComment', comment)
-        .then(() => {
-          this.comment = '';
-        })
-        .catch(() => {});
+      this.comments.push(comment);
+      this.comment = '';
     },
   },
 };

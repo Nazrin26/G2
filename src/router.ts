@@ -16,13 +16,14 @@ export default new Router({
     {
       path: '/login',
       name: 'Login',
-      component: Login,
+      component: Home,
+      props: { action: 'Login' },
     },
     {
       path: '/register',
       name: 'Register',
       component: Home,
-      props: { action: 'register' },
+      props: { action: 'Register' },
     },
     {
       path: '/dashboard',
@@ -36,9 +37,10 @@ export default new Router({
       component: Home,
     },
     {
-      path: 'pr',
-      name: 'pr',
-      component: PR,
+      path: '/pr',
+      name: 'PR',
+      component: Home,
+      props: { action: 'PR' },
     },
   ],
 });

@@ -1,7 +1,6 @@
 <template>
   <div class="login-form">
-    <form class="form-signin shadow p-3 mb-5 bg-white rounded"
-          v-show="loginCompanies">
+    <form class="form-signin shadow p-3 mb-5 bg-white rounded">
       <h1 class="h3 mb-3 font-weight-normal">Choose company</h1>
       <label for="inputTenant">Department</label>
       <div class="input-group input-group-sm mb-3">
@@ -12,36 +11,32 @@
           >{{company.name}}</option>
         </select>
       </div>
-      <button class="btn btn-lg btn-primary btn-block"
+      <button class="btn btn-xs btn-primary btn-block"
               @click="companyLogin()"
-      ></button>
+      >Select</button>
     </form>
   </div>
 </template>
 
 <script>
+import store from '@/store';
+
 export default {
   data() {
     return {
-      email: '',
-      password: '',
       companyId: 1,
-      companies: [{
-        id: 1, name: 'company1',
-      }],
-      loginDetails: true,
-      loginCompanies: false,
     };
   },
+  computed: {
+    companies() {
+      return this.$store.getters.comments;
+    },
+  },
   methods: {
-    authLogin() {
-      if (this.email && this.password) {
+    companyLogin2() {
+      if (this.companyId) {
         if (this.password !== '1') {
           console.log(this.companies);
-          this.loginDetails = false;
-          this.loginCompanies = true;
-        } else {
-          this.loginDetails = true;
         }
         /* axios.post('https://localhost:52582/api/identity/login', {
           Email: this.email,

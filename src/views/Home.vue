@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navbar></Navbar>
-    <div class="row">
+    <div class="col-12">
       <component :is="action"></component>
     </div>
   </div>

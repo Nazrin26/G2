@@ -1,66 +1,134 @@
 <template>
-  <div class="col-12">
+  <div class="col-12 mt-4" id="documentForm">
     <div class="row flex-xl-nowrap pl-md-5 pr-md-5">
       <h5>
         Reference :
-        <b>{{ details.docNumber }}</b>
+        <b>{{ docDetails.docNumber }}</b>
       </h5>
       &nbsp;
       <h5>
         Status :
-        <b>{{ details.status }}</b>
+        <b>{{ docDetails.docStatus }}</b>
       </h5>
     </div>
     <hr/>
     <div class="row flex-xl-nowrap">
       <div class="col-12 col-md-9 col-xl-9 py-md-3 pl-md-5 pr-md-5 bd-content">
-        <form>
+        <div>
           <div class="form-row">
-            <div class="form-group col-md-4">
-              <label for="inputDateRaised">Date Raised</label>
-              <div class="input-group input-group-sm mb-3">
-                <input type="date"
-                       v-model="details.dateRaised"
+            <div class="form-group col-md-3">
+              <label for="inputOrderType">Date Raised</label>
+              <div class="input-group input-group-sm">
+                <input type="text"
+                       v-model="orderType"
                        class="form-control"
-                       id="inputDateRaised"
-                       placeholder="Date Raised" disabled>
+                       id="inputOrderType"
+                       placeholder="OrderType" disabled>
               </div>
             </div>
-            <div class="form-group col-md-4">
-              <label for="PRNumber">PR Number</label>
-              <div class="input-group input-group-sm mb-3">
-                <a href="#" id="PRNumber">{{ details.prNumber }}</a>
-              </div>
+            <div class="form-check">
+              <label for="checkAnnual" class="form-check-label">Annual</label>
+              <input type="checkbox"
+                     v-model="isAnnual"
+                     class="form-check-input mt-lg-5"
+                     id="checkAnnual" disabled>
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group col-md-4">
-              <label for="inputDepartment">Department</label>
-              <div class="input-group input-group-sm mb-3">
-                <select v-model="details.department" class="form-control" id="inputDepartment">
-                  <option v-for="department in departments"
-                          v-bind:key="department.id"
-                          :value="department.id" >{{department.name}}</option>
+            <div class="form-group col-md-3">
+              <label for="inputProject">Project</label>
+              <div class="input-group input-group-sm">
+                <select v-model="project"
+                        class="form-control"
+                        :disabled="!isEditable"
+                        id="inputProject">
+                  <option v-for="project in projects"
+                          v-bind:key="project.id"
+                          :value="project.id" >{{project.name}}</option>
                 </select>
               </div>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
               <label for="inputCostCenter">Cost Center</label>
-              <div class="input-group input-group-sm mb-3">
-                <select v-model="details.costCenter" class="form-control" id="inputCostCenter">
+              <div class="input-group input-group-sm">
+                <select v-model="costCenter"
+                        class="form-control"
+                        :disabled="!isEditable"
+                        id="inputCostCenter">
                   <option v-for="costCenter in costCenters"
                           v-bind:key="costCenter.id"
                           :value="costCenter.id" >{{costCenter.name}}</option>
                 </select>
               </div>
             </div>
-            <div class="form-group col-md-4">
-              <label for="inputStock">Stock</label>
-              <div class="input-group input-group-sm mb-3">
-                <select v-model="details.stock" class="form-control" id="inputStock">
-                  <option v-for="stock in stocks"
-                          v-bind:key="stock.id"
-                          :value="stock.id" >{{stock.name}}</option>
+            <div class="form-group col-md-3">
+              <label for="inputRequestDate">Request Date</label>
+              <div class="input-group input-group-sm">
+                <input type="date"
+                       v-model="requestDate"
+                       class="form-control"
+                       id="inputRequestDate"
+                       placeholder="Request Date" disabled>
+              </div>
+            </div>
+            <div class="form-group col-md-3">
+              <label for="inputRequestedDate">Requested Date</label>
+              <div class="input-group input-group-sm">
+                <input type="date"
+                       v-model="requestedDate"
+                       class="form-control"
+                       id="inputRequestedDate"
+                       :disabled="!isEditable"
+                       placeholder="Requested Date">
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="inputRequestor">Requestor</label>
+              <div class="input-group input-group-sm">
+                <input type="text"
+                       v-model="requestor"
+                       class="form-control"
+                       id="inputRequestor"
+                       placeholder="Requestor" disabled>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="inputRequestedFor">Requested For</label>
+              <div class="input-group input-group-sm">
+                <input type="text"
+                       v-model="requestedFor"
+                       class="form-control"
+                       id="inputRequestedFor"
+                       :disabled="!isEditable"
+                       placeholder="RequestedFor">
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="inputDepartment">Requestor Department</label>
+              <div class="input-group input-group-sm">
+                <select v-model="department"
+                        class="form-control"
+                        id="inputDepartment" disabled>
+                  <option v-for="department in departments"
+                          v-bind:key="department.id"
+                          :value="department.id" >{{department.name}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="inputDepartmentFor">Requested For Department</label>
+              <div class="input-group input-group-sm">
+                <select v-model="departmentFor"
+                        class="form-control"
+                        :disabled="!isEditable"
+                        id="inputDepartmentFor">
+                  <option v-for="department in departments"
+                          v-bind:key="department.id"
+                          :value="department.id" >{{department.name}}</option>
                 </select>
               </div>
             </div>
@@ -71,17 +139,19 @@
               <label for="inputTotalAmount">Total Amount</label>
               <div class="input-group input-group-sm mb-3">
                 <input type="number"
-                       v-model="totalPrice"
+                       v-model="totalAmount"
                        class="form-control"
                        id="inputTotalAmount"
                        placeholder="Total Amount" disabled>
               </div>
             </div>
           </div>
-        </form>
-        <GINItems :items="items"></GINItems>
+        </div>
+        <PRItems :addBuyer="addBuyer"
+                 :isEditable="isEditable"
+                 v-on:update="updateTotalAmount"></PRItems>
         <br/>
-        <button type="button" class="btn btn-primary btn-sm" @click="saveGIN">Save</button>
+        <button type="button" class="btn btn-primary btn-sm" @click="savePR">Save</button>
       </div>
       <div class="d-none d-xl-block col-xl-3 bd-toc doc-right">
         <ApprovalFlow></ApprovalFlow>
@@ -91,107 +161,118 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 import axios from 'axios';
-import GINItems from './PRItems.vue';
+import PRItems from './PRItems.vue';
 import ApprovalFlow from '../Shared/ApprovalFlow.vue';
 import Comments from '../Shared/Comments.vue';
+import PR from '@/models/pr/pr';
 
-export default {
-  name: 'home',
+@Component({
   components: {
-    GINItems,
+    PRItems,
     ApprovalFlow,
     Comments,
   },
-  data() {
-    return {
-      details: {
-        docNumber: 'GRN00072',
-        status: 'Waiting Approve',
-        dateRaised: '2018-12-29',
-        prNumber: 'PR00001',
-        department: 1,
-        costCenter: 2,
-        stock: 1,
-        totalAmount: 0,
-      },
-      stocks: [{
-        id: 0, name: 'Select Stocks',
-      }, {
-        id: 1, name: 'stock1',
-      }, {
-        id: 2, name: 'stock2',
-      }],
-      costCenters: [{
-        id: 0, name: 'Select Cost Center',
-      }, {
-        id: 1, name: 'cc1',
-      }, {
-        id: 2, name: 'cc2',
-      }],
-      departments: [{
-        id: 0, name: 'Select Department',
-      }, {
-        id: 1, name: 'dep1',
-      }, {
-        id: 2, name: 'dep2',
-      }],
-      items: [{
-        itemName: 'laptop',
-        itemDescription: 'laptop description',
-        qty: 2,
-        price: 1000,
-        totalPrice: 2000,
-      }, {
-        itemName: 'notebook',
-        itemDescription: 'Moleskine Harry Potter',
-        qty: 2,
-        price: 25,
-        totalPrice: 50,
-      }],
+})
+
+export default class PRDOC extends Vue {
+  docDetails = new PR();
+
+  orderType: string = 'Purchase';
+
+  isAnnual: boolean = true;
+
+  requestDate: string = '2018-12-29';
+
+  requestedDate: string = '2018-12-29';
+
+  project: number = 0;
+
+  department: number = 1;
+
+  departmentFor: number = 1;
+
+  costCenter: number = 0;
+
+  totalAmount: number = 0;
+
+  requestor: string = 'Requestor';
+
+  requestedFor: string = 'Requestor';
+
+  addBuyer: boolean = false;
+
+  isEditable: boolean = true;
+
+  costCenters: any[] = [{
+    id: 0, name: 'Select Cost Center',
+  }, {
+    id: 1, name: 'cc1',
+  }, {
+    id: 2, name: 'cc2',
+  }];
+
+  projects: any[] = [{
+    id: 0, name: 'Select Project',
+  }, {
+    id: 1, name: 'project 1',
+  }, {
+    id: 2, name: 'project 2',
+  }];
+
+  departments: any[] = [{
+    id: 0, name: 'department 1',
+  }, {
+    id: 1, name: 'department 2',
+  }];
+
+  savePR() {
+    this.addBuyer = !this.addBuyer;
+    this.isEditable = !this.isEditable;
+    /* const PR = {
+      Id: null,
+      DocNumber: this.details.docNumber,
+      DocStatus: this.details.status,
+      RequestDate: this.details.requestDate,
+      RequestedDate: this.details.requestedDate,
+      DepartmentId: this.details.department,
+      CostCenter: this.details.costCenter,
+      Stock: this.details.costCenter,
+      GINItems: null,
     };
-  },
-  methods: {
-    saveGIN() {
-      const PR = {
-        Id: null,
-        GINNumber: this.details.docNumber,
-        GINStatus: this.details.status,
-        DateRaised: this.details.dateRaised,
-        PRNumber: this.details.prNumber,
-        DepartmentId: this.details.department,
-        CostCenter: this.details.costCenter,
-        Stock: this.details.costCenter,
-        GINItems: null,
-      };
-      console.log(GIN);
-      axios.post('https://localhost:44357/api/gin/SaveGIN', {
-        Item: 'green',
+    console.log(PR);
+    axios.post('https://localhost:44357/api/gin/SavePR', {
+      Item: 'green',
+    })
+      .then(() => {
+        console.log('success');
       })
-        .then(() => {
-          console.log('success');
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-  },
-  computed: {
-    totalPrice() {
-      // var amount = this.items.reduce((acc, item) => acc + item.totalPrice, 0)
-      // this.$parent.details.totalAmount = amount
-      return 1;
-    },
-  },
+      .catch((err) => {
+        console.log(err);
+      }); */
+  }
+
+  updateTotalAmount(totalAmount: number) {
+    this.totalAmount = totalAmount;
+  }
+
   async beforeCreate() {
-    this.documentNumber = 0;
-  },
-};
+    console.log(this.docDetails);
+    this.docDetails.docStatus = 'hello';
+    this.docDetails.docNumber = '123';
+    console.log(this.docDetails);
+  }
+}
 </script>
 
 <style>
   .doc-right{
     border-left: 1px solid rgba(0,0,0,.1);
+  }
+
+  #documentForm{
+    text-align: left;
   }
 </style>

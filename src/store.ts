@@ -11,6 +11,7 @@ export default new Vuex.Store({
         id: null,
       },
       roles: [],
+      companies: [],
       info: {
         email: null,
         name: null,
@@ -20,14 +21,18 @@ export default new Vuex.Store({
   },
   mutations: {
     AuthorizeUser(state: any, payload: any) {
-      state.user.token.id = payload;
-      localStorage.setItem('token', payload);
+      state.user.token.id = payload.token;
+      state.user.info.email = payload.email;
+      state.user.companies = payload.companies;
+
       console.log(state.user.token.id);
+      console.log(state.user.info.email);
+      console.log(state.user.companies);
     },
-    UnauthorizeUser(state, payload) {
+    UnauthorizeUser(state: any, payload: any) {
       state.user.token.id = payload;
-      localStorage.removeItem('token');
-      sessionStorage.removeItem('token');
+      state.user.info.email = payload;
+      state.user.companies = payload;
     },
   },
   actions: {
@@ -36,5 +41,6 @@ export default new Vuex.Store({
   getters: {
     // AuthGuard
     getUserActive: (state: any) => (!!state.user.info.id),
+    comments: (state: any) => (state.user.companies),
   },
 });
